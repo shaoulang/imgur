@@ -9,7 +9,10 @@ const User = mongoose.model('users');
 module.exports = app => {
   
   app.get('/api/volunteers', (req, res) => {
-    User.find((err, users) => {
+    User.find()
+      //.limit(req.params.limit)
+      //.skip(req.params.limit * req.params.page)
+      .exec((err, users) => {
       res.send({
         count: users.length,
         users
@@ -34,7 +37,7 @@ module.exports = app => {
       last_name,
       name: first_name + ' ' + last_name,
       ic,
-      birthday: moment(birthday).format('DD/MM/YYYY'),
+      birthday: moment(birthday, 'DD/MM/YYYY').format('DD/MM/YYYY'),
       gender,
       shirt_size,
       occupation,
@@ -55,11 +58,16 @@ module.exports = app => {
         relationship: (emergency_contact || {}).relationship,
         phone: (emergency_contact || {}).phone
       },
-      volunteer_interest
+      volunteer_interest,
+      joined_event: []
     });
 
-    user.save();
-    res.send(user);
+    try {
+      user.save();
+      res.send(user);
+    } catch (err) {
+      res.status(422).send(err);
+    }
   });
 
   app.put('/api/volunteers/:id', (req, res) => {
@@ -73,7 +81,7 @@ module.exports = app => {
       last_name,
       name            : first_name + ' ' + last_name,
       ic,
-      birthday        : moment(birthday).format('DD/MM/YYYY'),
+      birthday        :  moment(birthday, 'DD/MM/YYYY').format('DD/MM/YYYY'),
       gender,
       shirt_size,
       occupation,
