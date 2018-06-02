@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const eventSchema = new Schema({
   //personal info
   first_name: String,
   last_name: String,
-  name: String,
   ic: String,
-  birthday: String,
+  birthday: Date,
   gender: String,
   shirt_size: String,
   //occupation
@@ -33,10 +32,8 @@ const userSchema = new Schema({
   },
   //interest
   volunteer_interest: [String],
-  //Events
-  joined_event: [{ type: Schema.Types.ObjectId , ref: 'Events'}],
   //system info
   registerDate: { type: Date, default: Date.now },
 });
 
-mongoose.model('users', userSchema);
+mongoose.model('events', eventSchema);
