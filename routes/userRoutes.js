@@ -9,16 +9,19 @@ const User = mongoose.model('users');
 module.exports = app => {
   
   app.get('/api/volunteers', (req, res) => {
-    var limit   = parseInt(req.param('limit'));
-    var page    = parseInt(req.param('page'))-1;
-    var gender  = req.param('gender');
+    var limit     = parseInt(req.query.limit);
+    var page      = parseInt(req.query.page);
+    var query     = {};
+    (req.query.gender) ? query.gender = req.query.gender : null;
+    (req.query.shirt_size) ? query.shirt_size = req.query.shirt_size : null;
+    (req.query.keyword) ? query.name = new RegExp(req.query.keyword, 'i') : null;
 
-    User.find()
+    User.find(query)
       .limit(limit)
-      .skip(limit * page)
-      .where({gender})
+      .skip(limit * (page - 1))
       .exec((err, users) => {
         res.send({
+          page,
           limit,
           count: users.length,
           users
