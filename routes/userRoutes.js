@@ -3,10 +3,26 @@ const Path = require('path-parser');
 var moment = require('moment');
 const { URL } = require('url');
 const mongoose = require('mongoose');
+const metascraper = require('metascraper');
+const got = require('got');
 
 const User = mongoose.model('users');
 
 module.exports = app => {
+  
+  app.get('/api/metatest', (req, res) => {
+    const targetUrl = 'https://www.facebook.com/DoppleSpectre';
+
+    (async () => {
+      try {
+        const {body: html, url} = await got(targetUrl);
+        const metadata = await metascraper({html, url});
+        res.send(metadata);
+      } catch (error) {
+        res.send(error.response.body);
+      }
+    })();
+  });
   
   app.get('/api/volunteers', (req, res) => {
     var limit     = parseInt(req.query.limit);
