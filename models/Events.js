@@ -13,9 +13,9 @@ const eventSchema = new Schema({
     desc      : String
   }],
   volunteers    : [{ 
-    id    : {type: Schema.Types.ObjectId , ref: 'User'},
-    name  : String,
-    paid  : { type: Boolean, default: false}
+    id        : { type: Schema.Types.ObjectId , ref: 'User' },
+    name      : String,
+    paid      : { type: Boolean, default: false}
   }],
   participants  : [{ 
     name      : String,
