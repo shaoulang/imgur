@@ -4,6 +4,7 @@ const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Events');
 
 mongoose.connect(keys.mongoURI);
 
@@ -18,6 +19,7 @@ app.use(
 );
 
 require('./routes/userRoutes')(app);
+require('./routes/eventRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // express serve up production asset

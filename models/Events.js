@@ -5,7 +5,7 @@ const eventSchema = new Schema({
   //info
   name          : String,
   location      : String,
-  date          : Date,
+  date          : String,
   desc          : String,
   programme     : [{
     time      : String,
@@ -21,6 +21,8 @@ const eventSchema = new Schema({
     name      : String,
     age       : Number,
     home      : String,
+    vegetarian: Boolean,
+    allergy   : [String],
     emergency_contact  : {
       name: String,
       relationship: String,
@@ -32,7 +34,7 @@ const eventSchema = new Schema({
     amount: Number
   }],
   //system info
-  registerDate: { type: Date, default: Date.now },
+  createdDate: { type: Date, default: Date.now },
 });
 
 mongoose.model('events', eventSchema);
