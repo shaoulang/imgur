@@ -1,4 +1,4 @@
-const { map } = require('lodash');
+const { map, concat, remove } = require('lodash');
 const Path = require('path-parser');
 var moment = require('moment');
 const { URL } = require('url');
@@ -111,19 +111,23 @@ module.exports = app => {
       }
     }));
 
-    Events.update(
-      { _id: req.params.id },
-      { participants : list },
-      (error, event) => {
 
-        if (error){
-          res.send(error);
-        } else {
-          res.send(event);
-        }
-      }
-    )
+    Events.findOne({ _id: req.params.id }, (error, event) => {
+    	let newList = concat(event.participants, list);
 
+	    Events.update(
+	      { _id: req.params.id },
+	      { participants : newList },
+	      (error, event) => {
+
+	        if (error){
+	          res.send(error);
+	        } else {
+	          res.send(event);
+	        }
+	      }
+	    )
+    })
   });
 
   app.delete('/api/events/:id', (req, res) => {
@@ -136,6 +140,29 @@ module.exports = app => {
           id      : event._id
         });
       }
+    })
+  });
+
+  app.delete('/api/events/:id/participants/:pid', (req, res) => {
+
+    Events.findOne({ _id: req.params.id }, (error, event) => {
+    	let list = event.participants;
+    	let oldList = remove(list, p => {
+    		return (p._id == `${req.params.pid}`) ? p : null;
+    	});
+
+	    Events.update(
+	      { _id: req.params.id },
+	      { participants : list },
+	      (error, event) => {
+
+	        if (error){
+	          res.send(error);
+	        } else {
+	          res.send(event);
+	        }
+	      }
+	    )
     })
   });
 
