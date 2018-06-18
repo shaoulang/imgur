@@ -1,4 +1,4 @@
-const { map, concat, remove } = require('lodash');
+const { map, concat, remove, assign } = require('lodash');
 const Path = require('path-parser');
 var moment = require('moment');
 const { URL } = require('url');
@@ -95,6 +95,27 @@ module.exports = app => {
     )
   });
 
+  app.delete('/api/events/:id', (req, res) => {
+    Events.findByIdAndRemove({ _id: req.params.id }, (error, event) => {
+      if (error) {
+        res.send(error);
+      } else {
+        res.send({
+          message : 'Successfully deleted event.',
+          id      : event._id
+        });
+      }
+    })
+  });
+
+////////////////////////////Participants///////////////////////////////////
+
+  app.get('/api/events/:id/participants', (req, res) => {
+    Events.findOne({ _id: req.params.id }, (error, event) => {
+      res.send(event.participants);
+    })
+  });
+
   app.post('/api/events/:id/participants', (req, res) => {
     const { participants } = req.body;
 
@@ -130,16 +151,44 @@ module.exports = app => {
     })
   });
 
-  app.delete('/api/events/:id', (req, res) => {
-    Events.findByIdAndRemove({ _id: req.params.id }, (error, event) => {
-      if (error) {
-        res.send(error);
-      } else {
-        res.send({
-          message : 'Successfully deleted event.',
-          id      : event._id
-        });
+  app.put('/api/events/:id/participants/:pid', (req, res) => {
+    const { name, age, home, vegetarian, allergy, emergency_contact } = req.body;
+
+    const newData = { 
+      name,
+      age,
+      home,
+      vegetarian,
+      allergy,
+      emergency_contact : {
+        name          : (emergency_contact || {} ).name,
+        relationship  : (emergency_contact || {} ).relationship,
+        phone         : (emergency_contact || {} ).phone
       }
+    };
+
+    Events.findOne({ _id: req.params.id }, (error, event) => {
+    	let list = event.participants;
+    	let oldList = remove(list, p => {
+    		return (p._id == `${req.params.pid}`) ? p : null;
+      });
+      
+      oldList = assign(oldList[0], newData);
+
+      let newList = concat(list, oldList);
+
+	    Events.update(
+	      { _id: req.params.id },
+	      { participants : newList },
+	      (error, event) => {
+
+	        if (error){
+	          res.send(error);
+	        } else {
+	          res.send(event);
+	        }
+	      }
+	    )
     })
   });
 
