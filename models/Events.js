@@ -7,16 +7,47 @@ const eventSchema = new Schema({
   location      : String,
   date          : String,
   desc          : String,
+  //operations
   programme     : [{
     time      : String,
     activity  : String,
     desc      : String
   }],
+  transportation: [{
+    for       : String,
+    driver    : String,
+    phone     : String,
+    fees      : Number,
+    remark    : { type: String, default: '' }
+  }],
+  catering      : [{
+    meal      : String,
+    items     : [String],
+    venue     : String,
+    budget    : Number,
+    time_ready: String,
+    phone     : String,
+    remark    : { type: String, default: '' }
+  }],
+  documents      : [{
+    name      : String,
+    link      : String
+  }],
+  //Volunteers
+  dress_code    : { type: String, default: 'Event shirt, long pants, covered shoes' },
   volunteers    : [{ 
     id        : { type: Schema.Types.ObjectId , ref: 'User' },
     name      : String,
-    paid      : { type: Boolean, default: false }
+    phone     : String,
+    paid      : { type: Boolean, default: false },
+    role      : String,
+    group     : String
   }],
+  fees:[{
+    category: String,
+    amount: Number
+  }],
+  //participants
   participants  : [{ 
     name      : String,
     age       : Number,
@@ -28,10 +59,6 @@ const eventSchema = new Schema({
       relationship: String,
       phone: String
     }
-  }],
-  fees:[{
-    category: String,
-    amount: Number
   }],
   //system info
   createdDate: { type: Date, default: Date.now },
