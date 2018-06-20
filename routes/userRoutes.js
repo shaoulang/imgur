@@ -74,12 +74,14 @@ module.exports = app => {
       joined_event: []
     });
 
-    try {
-      user.save();
-      res.send(user);
-    } catch (err) {
-      res.status(422).send(err);
-    }
+    user.save((error, newUser) => {
+      if (error) {
+        res.send(error);
+      } else {
+        res.send(newUser);
+      }
+    });
+
   });
 
   app.put('/api/volunteers/:id', (req, res) => {

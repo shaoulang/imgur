@@ -54,12 +54,13 @@ module.exports = app => {
       })),
     });
 
-    try {
-      event.save();
-      res.send(event);
-    } catch (err) {
-      res.status(422).send(err);
-    }
+    event.save((error, newEvent) => {
+      if (error) {
+        res.send(error);
+      } else {
+        res.send(newEvent);
+      }
+    });
   });
 
   app.put('/api/events/:id', (req, res) => {

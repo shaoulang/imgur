@@ -20,6 +20,7 @@ app.use(
 
 require('./routes/userRoutes')(app);
 require('./routes/eventRoutes')(app);
+require('./routes/joinEventRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // express serve up production asset

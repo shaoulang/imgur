@@ -11,13 +11,14 @@ const eventSchema = new Schema({
   programme     : [{
     time      : String,
     activity  : String,
-    desc      : String
+    desc      : { type: String, default: '' },
+    remark    : { type: String, default: '' }
   }],
   transportation: [{
     for       : String,
     driver    : String,
     phone     : String,
-    fees      : Number,
+    fees      : { type: Number, default: 0 },
     remark    : { type: String, default: '' }
   }],
   catering      : [{
@@ -45,7 +46,7 @@ const eventSchema = new Schema({
   }],
   fees:[{
     category: String,
-    amount: Number
+    amount: { type: Number, default: 0 }
   }],
   //participants
   participants  : [{ 
