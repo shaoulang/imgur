@@ -2,38 +2,67 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const eventSchema = new Schema({
-  //personal info
-  first_name: String,
-  last_name: String,
-  ic: String,
-  birthday: Date,
-  gender: String,
-  shirt_size: String,
-  //occupation
-  occupation: String,
-  school: String,
-  //contacts
-  phone: String,
-  email: String,
-  address: String,
-  current_address: String,
-  facebook: String,
-  instagram: String,
-  //in case of emergency
-  health: {
+  //info
+  name          : String,
+  location      : String,
+  date          : String,
+  desc          : String,
+  //operations
+  programme     : [{
+    time      : String,
+    activity  : String,
+    desc      : { type: String, default: '' },
+    remark    : { type: String, default: '' }
+  }],
+  transportation: [{
+    for       : String,
+    driver    : String,
+    phone     : String,
+    fees      : { type: Number, default: 0 },
+    remark    : { type: String, default: '' }
+  }],
+  catering      : [{
+    meal      : String,
+    items     : [String],
+    venue     : String,
+    budget    : Number,
+    time_ready: String,
+    phone     : String,
+    remark    : { type: String, default: '' }
+  }],
+  documents      : [{
+    name      : String,
+    link      : String
+  }],
+  //Volunteers
+  dress_code    : { type: String, default: 'Event shirt, long pants, covered shoes' },
+  volunteers    : [{ 
+    id        : { type: Schema.Types.ObjectId , ref: 'User' },
+    name      : String,
+    phone     : String,
+    paid      : { type: Boolean, default: false },
+    role      : String,
+    group     : String
+  }],
+  fees:[{
+    category: String,
+    amount: { type: Number, default: 0 }
+  }],
+  //participants
+  participants  : [{ 
+    name      : String,
+    age       : Number,
+    home      : String,
     vegetarian: Boolean,
-    allergy: [String],
-    illness: String
-  },
-  emergency_contact: {
-    name: String,
-    relationship: String,
-    phone: String
-  },
-  //interest
-  volunteer_interest: [String],
+    allergy   : [String],
+    emergency_contact  : {
+      name: String,
+      relationship: String,
+      phone: String
+    }
+  }],
   //system info
-  registerDate: { type: Date, default: Date.now },
+  createdDate: { type: Date, default: Date.now },
 });
 
 mongoose.model('events', eventSchema);

@@ -4,6 +4,7 @@ const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Events');
 
 mongoose.connect(keys.mongoURI);
 
@@ -18,6 +19,8 @@ app.use(
 );
 
 require('./routes/userRoutes')(app);
+require('./routes/eventRoutes')(app);
+require('./routes/joinEventRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // express serve up production asset
@@ -34,3 +37,4 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
+console.log("Server is up and running!");

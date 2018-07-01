@@ -17,6 +17,7 @@
   "author": "spextrex",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/icons": "^1.1.0",
     "body-parser": "^1.18.2",
     "concurrently": "^3.5.0",
     "cookie-session": "^2.0.0-beta.3",
@@ -27,6 +28,8 @@
     "mongoose": "^4.13.0",
     "nodemon": "^1.12.1",
     "path-parser": "^3.0.1",
-    "stripe": "^5.3.0"
+    "qs": "^6.5.2",
+    "stripe": "^5.3.0",
+    "typeface-roboto": "0.0.54"
   }
 }

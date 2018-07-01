@@ -8,6 +8,7 @@ const User = mongoose.model('users');
 
 module.exports = app => {
   
+  
   app.get('/api/volunteers', (req, res) => {
     var limit     = parseInt(req.query.limit);
     var page      = parseInt(req.query.page);
@@ -71,12 +72,14 @@ module.exports = app => {
       joined_event: []
     });
 
-    try {
-      user.save();
-      res.send(user);
-    } catch (err) {
-      res.status(422).send(err);
-    }
+    user.save((error, newUser) => {
+      if (error) {
+        res.send(error);
+      } else {
+        res.send(newUser);
+      }
+    });
+
   });
 
   app.put('/api/volunteers/:id', (req, res) => {
