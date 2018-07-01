@@ -3,25 +3,20 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import Header from './Header';
 import Landing from './Landing';
-import Dashboard from './Dashboard';
-import SurveyNew from './surveys/SurveyNew';
+import TarzanVolunteer from './Tarzan/list';
+import TarzanForm from './Tarzan/form';
 
 class App extends Component {
-  componentDidMount() {
-    this.props.fetchUser();
-  }
 
   render() {
     return (
-      <div className="container" >
+      <div className="container" style={{width: '90%'}}>
         <BrowserRouter>
           <div>
-            <Header />
             <Route exact path="/" component={Landing} />
-            <Route exact path="/surveys" component={Dashboard} />
-            <Route path="/surveys/new" component={SurveyNew} />
+            <Route exact path="/tarzan-conquer-the-jungle/register" component={TarzanForm} />
+            <Route exact path="/volunteers-list/tarzan-conquer-the-jungle" component={TarzanVolunteer} />
           </div>
         </BrowserRouter>
       </div>

@@ -3,8 +3,6 @@ const Path = require('path-parser');
 var moment = require('moment');
 const { URL } = require('url');
 const mongoose = require('mongoose');
-const metascraper = require('metascraper');
-const got = require('got');
 
 const User = mongoose.model('users');
 
